@@ -73,10 +73,30 @@ const corsOptions = {
     if (ok) return callback(null, true)
     return callback(new Error('Not allowed by CORS'))
   },
-  credentials: true
+  credentials: true,
+  optionsSuccessStatus: 204
 }
 app.use(cors(corsOptions))
-app.options('*', cors(corsOptions))
+// Handle preflight without using bare '*' path (Express 5 uses path-to-regexp)
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    const origin = req.headers.origin
+    try {
+      const ok = !origin || allowedOrigins.includes(origin) || isLocalDev(origin) || new URL(origin).hostname.endsWith('.vercel.app')
+      if (ok) {
+        if (origin) {
+          res.header('Access-Control-Allow-Origin', origin)
+          res.header('Vary', 'Origin')
+        }
+        res.header('Access-Control-Allow-Credentials', 'true')
+        res.header('Access-Control-Allow-Headers', req.headers['access-control-request-headers'] || 'Content-Type, Authorization')
+        res.header('Access-Control-Allow-Methods', req.headers['access-control-request-method'] || 'GET,POST,PUT,DELETE,OPTIONS')
+        return res.sendStatus(204)
+      }
+    } catch {}
+  }
+  next()
+})
 app.use(express.json())
 app.use(cookieParser())
 app.use("/api/auth",authRouter)
