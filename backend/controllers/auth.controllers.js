@@ -50,12 +50,13 @@ export const signUp=async (req,res) => {
         }
 
         const token=await genToken(user)
-        res.cookie("token",token,{
-            secure:false,
-            sameSite:"lax",
-            maxAge:7*24*60*60*1000,
-            httpOnly:true
-        })
+        const cookieOptions = {
+            httpOnly: true,
+            maxAge: 7*24*60*60*1000,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+        }
+        res.cookie("token",token,cookieOptions)
 
         return res.status(201).json(user)
 
@@ -87,12 +88,13 @@ export const signIn=async (req,res) => {
      }
 
     const token=await genToken(user)
-        res.cookie("token",token,{
-            secure:false,
-            sameSite:"lax",
-            maxAge:7*24*60*60*1000,
-            httpOnly:true
-        })
+        const cookieOptions = {
+            httpOnly: true,
+            maxAge: 7*24*60*60*1000,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+        }
+        res.cookie("token",token,cookieOptions)
   
         return res.status(200).json(user)
 
@@ -190,12 +192,13 @@ export const googleAuth=async (req,res) => {
         let user=await User.findOne({email})
         if(user){
             const token=await genToken(user)
-            res.cookie("token",token,{
-                secure:false,
-                sameSite:"lax",
-                maxAge:7*24*60*60*1000,
-                httpOnly:true
-            })
+            const cookieOptions = {
+                httpOnly: true,
+                maxAge: 7*24*60*60*1000,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+            }
+            res.cookie("token",token,cookieOptions)
             return res.status(200).json(user)
         }
         
