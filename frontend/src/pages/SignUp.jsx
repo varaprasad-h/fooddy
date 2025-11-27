@@ -59,6 +59,9 @@ function SignUp() {
         return;
       }
 
+      if (result.data?.token) {
+        localStorage.setItem('token', result.data.token)
+      }
       dispatch(setUserData(result.data));
       setErr("");
       setLoading(false);
@@ -91,6 +94,9 @@ function SignUp() {
         return;
       }
 
+      if (data?.token) {
+        localStorage.setItem('token', data.token)
+      }
       dispatch(setUserData(data));
       navigate("/");
     } catch (error) {

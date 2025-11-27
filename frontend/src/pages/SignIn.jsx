@@ -25,6 +25,9 @@ function SignIn() {
     try {
       const result = await authAPI.signin({ email, password });
       if (result.status === 200) {
+        if (result.data?.token) {
+          localStorage.setItem('token', result.data.token)
+        }
         dispatch(setUserData(result.data));
         navigate("/");
       } else {
@@ -43,6 +46,9 @@ function SignIn() {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       const { data } = await authAPI.googleAuth({ email: result.user.email });
+      if (data?.token) {
+        localStorage.setItem('token', data.token)
+      }
       dispatch(setUserData(data));
       navigate("/");
     } catch (error) {

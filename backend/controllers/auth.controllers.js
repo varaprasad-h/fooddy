@@ -50,15 +50,16 @@ export const signUp=async (req,res) => {
         }
 
         const token=await genToken(user)
+        const isProd = process.env.NODE_ENV === 'production' || req.headers['x-forwarded-proto'] === 'https'
         const cookieOptions = {
             httpOnly: true,
             maxAge: 7*24*60*60*1000,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+            secure: !!isProd,
+            sameSite: isProd ? 'none' : 'lax'
         }
         res.cookie("token",token,cookieOptions)
 
-        return res.status(201).json(user)
+        return res.status(201).json({ ...user.toObject(), token })
 
     } catch (error) {
         return res.status(500).json(`sign up error ${error}`)
@@ -88,15 +89,16 @@ export const signIn=async (req,res) => {
      }
 
     const token=await genToken(user)
+        const isProd = process.env.NODE_ENV === 'production' || req.headers['x-forwarded-proto'] === 'https'
         const cookieOptions = {
             httpOnly: true,
             maxAge: 7*24*60*60*1000,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+            secure: !!isProd,
+            sameSite: isProd ? 'none' : 'lax'
         }
         res.cookie("token",token,cookieOptions)
   
-        return res.status(200).json(user)
+        return res.status(200).json({ ...user.toObject(), token })
 
     } catch (error) {
         console.error('Sign in error:', error)
@@ -192,14 +194,15 @@ export const googleAuth=async (req,res) => {
         let user=await User.findOne({email})
         if(user){
             const token=await genToken(user)
+            const isProd = process.env.NODE_ENV === 'production' || req.headers['x-forwarded-proto'] === 'https'
             const cookieOptions = {
                 httpOnly: true,
                 maxAge: 7*24*60*60*1000,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+                secure: !!isProd,
+                sameSite: isProd ? 'none' : 'lax'
             }
             res.cookie("token",token,cookieOptions)
-            return res.status(200).json(user)
+            return res.status(200).json({ ...user.toObject(), token })
         }
         
         // Create user data object
@@ -233,13 +236,15 @@ export const googleAuth=async (req,res) => {
         }
 
         const token=await genToken(user)
-        res.cookie("token",token,{
-            secure:false,
-            sameSite:"lax",
-            maxAge:7*24*60*60*1000,
-            httpOnly:true
-        })
-        return res.status(201).json(user)
+        const isProd = process.env.NODE_ENV === 'production' || req.headers['x-forwarded-proto'] === 'https'
+        const cookieOptions = {
+            httpOnly: true,
+            maxAge: 7*24*60*60*1000,
+            secure: !!isProd,
+            sameSite: isProd ? 'none' : 'lax'
+        }
+        res.cookie("token",token,cookieOptions)
+        return res.status(201).json({ ...user.toObject(), token })
 
     } catch (error) {
         return res.status(500).json(`google auth error ${error}`)
