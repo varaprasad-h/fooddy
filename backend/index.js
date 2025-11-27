@@ -32,11 +32,18 @@ const defaultAllowed = [
   "http://127.0.0.1:5174",
   "http://127.0.0.1:5175",
   "http://127.0.0.1:5180",
+  "https://foody-six-jet.vercel.app",
+  "https://foody-oqvg.onrender.com",
 ]
 const allowedOrigins = envAllowed.length ? envAllowed : defaultAllowed
 const io=new Server(server,{
    cors:{
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true)
+      const ok = allowedOrigins.includes(origin) || /^https?:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin) || (()=>{ try { return new URL(origin).hostname.endsWith('.vercel.app') } catch { return false } })()
+      if (ok) return callback(null, true)
+      return callback(new Error('Not allowed by Socket.IO CORS'))
+    },
     credentials:true,
     methods:['POST','GET']
 }
@@ -59,17 +66,17 @@ const isLocalDev = (o) => {
   }
 }
 
-app.use(cors({
+const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl)
     if (!origin) return callback(null, true)
-    if (allowedOrigins.includes(origin) || isLocalDev(origin)) {
-      return callback(null, true)
-    }
+    const ok = allowedOrigins.includes(origin) || isLocalDev(origin) || (()=>{ try { return new URL(origin).hostname.endsWith('.vercel.app') } catch { return false } })()
+    if (ok) return callback(null, true)
     return callback(new Error('Not allowed by CORS'))
   },
   credentials: true
-}))
+}
+app.use(cors(corsOptions))
+app.options('*', cors(corsOptions))
 app.use(express.json())
 app.use(cookieParser())
 app.use("/api/auth",authRouter)
