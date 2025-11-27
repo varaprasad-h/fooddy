@@ -3,7 +3,7 @@ import Nav from './Nav.jsx';
 import { useSelector, useDispatch } from 'react-redux';
 import { FaUtensils, FaStore, FaToggleOn, FaToggleOff, FaPen, FaStar } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
-import OwnerItemCard from './ownerItemCard';
+import OwnerItemCard from './OwnerItemCard';
 import { setMyShopData } from '../redux/ownerSlice';
 import { ratingAPI, shopAPI } from '../api';
 
