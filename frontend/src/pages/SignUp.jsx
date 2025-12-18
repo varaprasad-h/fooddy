@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import { authAPI } from "../api";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../../firebase";
 import { ClipLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../redux/userSlice";
@@ -70,40 +67,6 @@ function SignUp() {
       setErr(error?.response?.data?.message || "Sign-up failed");
       setLoading(false);
     }
-  };
-
-  const handleGoogleAuth = async () => {
-    if (!mobile) return setErr("Mobile number is required");
-    setLoading(true);
-    try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-
-      const { data } = await authAPI.googleAuth({
-        fullName: result.user.displayName,
-        email: result.user.email,
-        role,
-        mobile,
-        userType: role === "user" ? userType : undefined,
-      });
-
-      if (data && data.pendingApproval) {
-        setErr("Account created. Pending superadmin approval.");
-        setLoading(false);
-        navigate("/signin");
-        return;
-      }
-
-      if (data?.token) {
-        localStorage.setItem('token', data.token)
-      }
-      dispatch(setUserData(data));
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-      setErr(error?.response?.data?.message || "Google sign-up failed");
-    }
-    setLoading(false);
   };
 
   return (
@@ -256,25 +219,6 @@ function SignUp() {
             {err}
           </div>
         )}
-
-        {/* Divider */}
-        <div className="flex items-center my-6">
-          <div className="flex-grow border-t border-gray-300" />
-          <span className="mx-3 text-gray-500 text-sm font-medium">or</span>
-          <div className="flex-grow border-t border-gray-300" />
-        </div>
-
-        {/* Google Auth */}
-        <button
-          onClick={handleGoogleAuth}
-          disabled={loading}
-          className="w-full flex items-center justify-center gap-3 border border-gray-300 py-3 rounded-xl bg-white hover:bg-[#fff9f7] hover:shadow-md transition-all"
-        >
-          <FcGoogle size={22} />
-          <span className="font-semibold text-gray-700">
-            Continue with Google
-          </span>
-        </button>
 
         {/* Signin Link */}
         <p className="text-center mt-6 text-gray-700 text-sm font-medium">

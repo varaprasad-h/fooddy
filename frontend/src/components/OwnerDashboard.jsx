@@ -5,7 +5,7 @@ import { FaUtensils, FaStore, FaToggleOn, FaToggleOff, FaPen, FaStar } from "rea
 import { useNavigate } from 'react-router-dom';
 import OwnerItemCard from './OwnerItemCard';
 import { setMyShopData } from '../redux/ownerSlice';
-import { ratingAPI, shopAPI } from '../api';
+import { shopAPI } from '../api';
 
 function OwnerDashboard() {
   const { myShopData } = useSelector(state => state.owner);
@@ -13,19 +13,8 @@ function OwnerDashboard() {
   const dispatch = useDispatch();
 
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
-  const [ratingSummary, setRatingSummary] = useState(null);
 
-  useEffect(() => {
-    const fetchRatings = async () => {
-      try {
-        const res = await ratingAPI.getMyShopRatings();
-        setRatingSummary(res.data);
-      } catch (error) {
-        console.log('fetch owner ratings error', error);
-      }
-    };
-    fetchRatings();
-  }, []);
+  
 
   useEffect(() => {
     const refreshShop = async () => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import Nav from './Nav'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUserData } from '../redux/userSlice'
@@ -24,7 +24,6 @@ function DeliveryBoy() {
   const [loading, setLoading] = useState(false)
   const [isActive, setIsActive] = useState(userData?.isActive || false)
   const [ratingSummary, setRatingSummary] = useState({ average: 0, count: 0 })
-  const [deliveryRatings, setDeliveryRatings] = useState([])
   const [upiByKey, setUpiByKey] = useState({})
   const isMobile = typeof navigator !== "undefined" && /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent)
 
@@ -93,14 +92,14 @@ function DeliveryBoy() {
     }
   }
 
-  const handleFetchByMonth = async () => {
+  const handleFetchByMonth = useCallback(async () => {
     try {
       const res = await orderAPI.getDeliveriesByDate(filterYear, filterMonth)
       setFilteredDeliveries(res.data || { totalDeliveries: 0, deliveries: [] })
     } catch (error) {
       console.log(error)
     }
-  }
+  }, [filterYear, filterMonth])
 
   const handleFetchByDate = async () => {
     try {
@@ -169,7 +168,6 @@ function DeliveryBoy() {
       try {
         const res = await ratingAPI.getDeliveryRatings()
         setRatingSummary(res.data?.summary || { average: 0, count: 0 })
-        setDeliveryRatings(res.data?.ratings || [])
       } catch (err) {
         console.log('fetch delivery rating error', err)
       }
@@ -179,7 +177,7 @@ function DeliveryBoy() {
     handleTodayDeliveries()
     handleDeliveryCounts()
     handleFetchByMonth()
-  }, [userData])
+  }, [userData, handleFetchByMonth])
 
   return (
     <div className="w-screen min-h-screen flex flex-col items-center bg-[#f8fafc] overflow-y-auto">
