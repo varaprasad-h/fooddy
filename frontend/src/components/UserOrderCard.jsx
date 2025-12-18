@@ -5,6 +5,7 @@ import { setMyOrders } from '../redux/userSlice'
 import { useSelector } from 'react-redux'
 import { ClipLoader } from 'react-spinners'
 import { ratingAPI, orderAPI } from '../api'
+import { goto } from '../routes'
 
 function UserOrderCard({ data }) {
     const navigate = useNavigate()
@@ -393,7 +394,7 @@ function UserOrderCard({ data }) {
                         </button>
                     )}
 
-                    <button className='bg-[#ff4d2d] hover:bg-[#e64526] text-white px-4 py-2 rounded-lg text-sm' onClick={() => navigate(`/track-order/${data._id}`)}>Track Order</button>
+                    <button className='bg-[#ff4d2d] hover:bg-[#e64526] text-white px-4 py-2 rounded-lg text-sm' onClick={() => goto(navigate, `/track-order/${data._id}`)}>Track Order</button>
                 </div>
             </div>
 

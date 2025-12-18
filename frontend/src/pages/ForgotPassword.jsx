@@ -3,6 +3,7 @@ import { IoIosArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { authAPI } from "../api";
 import { ClipLoader } from "react-spinners";
+import { goto } from "../routes";
 
 function ForgotPassword() {
   const [step, setStep] = useState(1);
@@ -51,7 +52,7 @@ function ForgotPassword() {
       const result = await authAPI.resetPassword(email, newPassword);
       console.log(result);
       setErr("");
-      navigate("/signin");
+      goto(navigate, "/signin");
     } catch (error) {
       setErr(error?.response?.data?.message || "Reset failed");
     }
@@ -71,7 +72,7 @@ function ForgotPassword() {
           <IoIosArrowRoundBack
             size={36}
             className="text-[#ff2b85] cursor-pointer hover:text-[#fc8019] transition"
-            onClick={() => navigate("/signin")}
+            onClick={() => goto(navigate, "/signin")}
           />
           <h1 className="text-3xl font-extrabold text-[#fc8019] tracking-tight drop-shadow-sm">
             Forgot Password

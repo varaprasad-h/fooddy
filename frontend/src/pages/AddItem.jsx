@@ -7,6 +7,7 @@ import { ClipLoader } from "react-spinners";
 import { setMyShopData } from "../redux/ownerSlice";
 import { getCategories, categories } from "../category";
 import { itemAPI } from "../api";
+import { goto } from "../routes";
 
 function AddItem() {
   const navigate = useNavigate();
@@ -86,7 +87,7 @@ function AddItem() {
       setBackendImage(null);
 
       setTimeout(() => {
-        navigate("/");
+        goto(navigate, "/");
       }, 1500);
     } catch (error) {
       console.log(error);
@@ -109,7 +110,7 @@ function AddItem() {
         className="absolute top-4 left-4 sm:top-6 sm:left-6 z-50 flex items-center gap-1 
         text-[#ff4d2d] hover:text-[#ff2b85] transition-all duration-200 
         cursor-pointer bg-white/70 backdrop-blur-md px-2 py-1 rounded-full shadow-md"
-        onClick={() => navigate("/")}
+        onClick={() => goto(navigate, "/")}
       >
         <IoIosArrowRoundBack size={28} className="sm:size-[36px]" />
         <span className="text-sm sm:text-base font-medium hidden sm:inline">

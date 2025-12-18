@@ -7,6 +7,7 @@ import { FaUtensils } from "react-icons/fa";
 import FoodCard from '../components/FoodCard';
 import { FaArrowLeft } from "react-icons/fa";
 import { useSelector } from 'react-redux';
+import { goto } from '../routes';
 
 function Shop() {
     const {shopId}=useParams()
@@ -57,7 +58,7 @@ function Shop() {
     }, [handleShop])
   return (
     <div className='min-h-screen bg-gray-50'>
-        <button className='absolute top-4 left-4 z-20 flex items-center gap-2 bg-black/50 hover:bg-black/70 text-white px-3 py-2 rounded-full shadow-md transition' onClick={()=>navigate("/")}>
+        <button className='absolute top-4 left-4 z-20 flex items-center gap-2 bg-black/50 hover:bg-black/70 text-white px-3 py-2 rounded-full shadow-md transition' onClick={()=>goto(navigate, "/")}>
         <FaArrowLeft />
 <span>Back</span>
         </button>

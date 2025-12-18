@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import OwnerItemCard from './OwnerItemCard';
 import { setMyShopData } from '../redux/ownerSlice';
 import { shopAPI } from '../api';
+import { goto } from '../routes';
 
 function OwnerDashboard() {
   const { myShopData } = useSelector(state => state.owner);
@@ -57,7 +58,7 @@ function OwnerDashboard() {
               Join our food delivery platform and start getting online orders today.
             </p>
             <button
-              onClick={() => navigate("/create-edit-shop")}
+              onClick={() => goto(navigate, "/create-edit-shop")}
               className="bg-[#ff4d2d] text-white px-6 py-2 rounded-full font-semibold shadow-md hover:bg-orange-600 transition-colors"
             >
               Get Started
@@ -95,7 +96,7 @@ function OwnerDashboard() {
 
             {/* Edit Button */}
             <button
-              onClick={() => navigate("/create-edit-shop")}
+              onClick={() => goto(navigate, "/create-edit-shop")}
               className="absolute top-4 right-4 bg-[#ff4d2d] text-white p-2 rounded-full shadow-md hover:bg-orange-600 transition-colors"
             >
               <FaPen size={18} />

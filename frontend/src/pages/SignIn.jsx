@@ -5,6 +5,7 @@ import { authAPI } from "../api";
 import { ClipLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../redux/userSlice";
+import { goto } from "../routes";
 
 function SignIn() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ function SignIn() {
           localStorage.setItem('token', result.data.token)
         }
         dispatch(setUserData(result.data));
-        navigate("/");
+        goto(navigate, "/");
       } else {
         setErr(result.data?.message || "Sign-in failed");
       }
@@ -96,7 +97,7 @@ function SignIn() {
         {/* Forgot Password */}
         <div
           className="text-right text-sm text-[#fc8019] font-medium mb-5 hover:underline cursor-pointer"
-          onClick={() => navigate("/forgot-password")}
+          onClick={() => goto(navigate, "/forgot-password")}
         >
           Forgot Password?
         </div>
@@ -121,7 +122,7 @@ function SignIn() {
         <p className="text-center mt-6 text-gray-700 text-sm font-medium">
           Don’t have an account?{" "}
           <span
-            onClick={() => navigate("/signup")}
+            onClick={() => goto(navigate, "/signup")}
             className="text-[#ff2b85] font-semibold cursor-pointer hover:underline"
           >
             Sign Up

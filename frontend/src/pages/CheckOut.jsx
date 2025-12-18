@@ -8,6 +8,7 @@ import { FaMobileScreenButton } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 import { addMyOrder, clearCart, syncCartPrices } from '../redux/userSlice';
 import { itemAPI, orderAPI } from '../api';
+import { goto } from '../routes';
 
 function CheckOut() {
   const { cartItems ,totalAmount, itemsInMyCity } = useSelector(state => state.user)
@@ -93,7 +94,7 @@ function CheckOut() {
       if(paymentMethod=="cod"){
         dispatch(addMyOrder(result.data))
         dispatch(clearCart())
-        navigate("/order-placed")
+        goto(navigate, "/order-placed")
       }else{
         // Online payment: prefer direct UPI link without Razorpay
         if (upiLink) {
@@ -120,7 +121,7 @@ function CheckOut() {
           // Fallback: order created without Razorpay
           dispatch(addMyOrder(result.data))
           dispatch(clearCart())
-          navigate("/order-placed")
+          goto(navigate, "/order-placed")
         }
        }
     
@@ -156,7 +157,7 @@ const openRazorpayWindow=(orderId,razorOrder)=>{
     })
         dispatch(addMyOrder(result.data))
         dispatch(clearCart())
-      navigate("/order-placed")
+      goto(navigate, "/order-placed")
   } catch (error) {
     console.log(error)
     alert('Payment verification failed. Please contact support.')
@@ -182,7 +183,7 @@ const openRazorpayWindow=(orderId,razorOrder)=>{
 
   return (
     <div className='min-h-screen bg-[#fff9f6] flex items-center justify-center p-6'>
-      <div className=' absolute top-[20px] left-[20px] z-[10]' onClick={() => navigate("/")}>
+      <div className=' absolute top-[20px] left-[20px] z-[10]' onClick={() => goto(navigate, "/")}>
         <IoIosArrowRoundBack size={35} className='text-[#ff4d2d]' />
       </div>
       <div className='w-full max-w-[900px] bg-white rounded-2xl shadow-xl p-6 space-y-6'>

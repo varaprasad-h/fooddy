@@ -6,6 +6,7 @@ import { FaStore } from "react-icons/fa";
 import { ClipLoader } from "react-spinners";
 import { setMyShopData } from "../redux/ownerSlice";
 import { shopAPI } from "../api";
+import { goto } from "../routes";
 
 function CreateEditShop() {
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ function CreateEditShop() {
 
       const result = await shopAPI.createEdit(formData);
       dispatch(setMyShopData(result.data));
-      navigate("/");
+      goto(navigate, "/");
     } catch (error) {
       console.log(error);
     } finally {
@@ -63,7 +64,7 @@ function CreateEditShop() {
       {/* Back Button */}
       <div
         className="absolute top-[20px] left-[20px] z-[10] mb-[10px] cursor-pointer hover:scale-110 transition-transform"
-        onClick={() => navigate("/")}
+        onClick={() => goto(navigate, "/")}
       >
         <IoIosArrowRoundBack size={40} className="text-[#ff2b85]" />
       </div>

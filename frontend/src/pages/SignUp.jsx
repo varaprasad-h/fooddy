@@ -5,6 +5,7 @@ import { authAPI } from "../api";
 import { ClipLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../redux/userSlice";
+import { goto } from "../routes";
 
 function SignUp() {
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ function SignUp() {
       if (result.data && result.data.pendingApproval) {
         setErr("Account created. Pending superadmin approval.");
         setLoading(false);
-        navigate("/signin");
+        goto(navigate, "/signin");
         return;
       }
 
@@ -62,7 +63,7 @@ function SignUp() {
       dispatch(setUserData(result.data));
       setErr("");
       setLoading(false);
-      navigate("/");
+      goto(navigate, "/");
     } catch (error) {
       setErr(error?.response?.data?.message || "Sign-up failed");
       setLoading(false);
@@ -224,7 +225,7 @@ function SignUp() {
         <p className="text-center mt-6 text-gray-700 text-sm font-medium">
           Already have an account?{" "}
           <span
-            onClick={() => navigate("/signin")}
+            onClick={() => goto(navigate, "/signin")}
             className="text-[#ff2b85] font-semibold cursor-pointer hover:underline"
           >
             Sign In

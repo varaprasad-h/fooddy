@@ -10,6 +10,7 @@ import FoodCard from './FoodCard';
 import { useNavigate } from 'react-router-dom';
 import { setItemsInMyCity, setShopsInMyCity } from '../redux/userSlice';
 import { itemAPI } from '../api';
+import { goto } from '../routes';
 
 function UserDashboard() {
   const {currentCity,shopInMyCity,itemsInMyCity,searchItems,socket}=useSelector(state=>state.user)
@@ -289,7 +290,7 @@ setRightButton(element.scrollLeft+element.clientWidth<element.scrollWidth)
 
           <div className='w-full flex overflow-x-auto gap-4 pb-2 ' ref={shopScrollRef}>
             {shopInMyCity?.map((shop, index) => (
-              <CategoryCard name={shop.name} image={shop.image} key={index} onClick={()=>navigate(`/shop/${shop._id}`)}/>
+              <CategoryCard name={shop.name} image={shop.image} key={index} onClick={()=>goto(navigate, `/shop/${shop._id}`)}/>
             ))}
           </div>
           {showRightShopButton &&  <button className='absolute right-0 top-1/2 -translate-y-1/2 bg-[#ff4d2d] text-white p-2 rounded-full shadow-lg hover:bg-[#e64528] z-10' onClick={()=>scrollHandler(shopScrollRef,"right")}>

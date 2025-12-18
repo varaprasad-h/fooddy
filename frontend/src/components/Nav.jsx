@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSearchItems, setUserData } from "../redux/userSlice";
 import { userAPI, authAPI, itemAPI } from "../api";
 import { useNavigate } from "react-router-dom";
+import { goto } from "../routes";
 
 function Nav() {
   const { userData, currentCity, cartItems } = useSelector((state) => state.user);
@@ -24,7 +25,7 @@ function Nav() {
       await userAPI.setActive(false);
       await authAPI.signout();
       dispatch(setUserData(null));
-      navigate("/login");
+      goto(navigate, "/signin");
     } catch (error) {
       console.log(error);
     }
@@ -50,7 +51,7 @@ function Nav() {
       <div className="flex items-center gap-2 sm:gap-5">
         <h1
           className="text-3xl sm:text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#fc8019] to-[#ff2b85] cursor-pointer hover:scale-105 transition-transform"
-          onClick={() => navigate("/")}
+          onClick={() => goto(navigate, "/")}
         >
           Food<span className="text-[#ff2b85]">Way</span>
         </h1>
@@ -107,7 +108,7 @@ function Nav() {
               <>
                 {/* Desktop Add Item */}
                 <button
-                  onClick={() => navigate("/add-item")}
+                  onClick={() => goto(navigate, "/add-item")}
                   className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-[#fc8019] to-[#ff2b85] text-white px-4 py-2 rounded-full font-semibold shadow-md hover:shadow-lg hover:scale-[1.03] transition-all"
                 >
                   <FaPlus size={14} />
@@ -116,7 +117,7 @@ function Nav() {
 
                 {/* Mobile Add Item (icon only) */}
                 <button
-                  onClick={() => navigate("/add-item")}
+                  onClick={() => goto(navigate, "/add-item")}
                   className="sm:hidden flex items-center justify-center w-[38px] h-[38px] rounded-full bg-gradient-to-r from-[#fc8019] to-[#ff2b85] text-white shadow-md hover:scale-110 transition-transform"
                   title="Add Item"
                 >
@@ -127,7 +128,7 @@ function Nav() {
 
             {/* Desktop Orders */}
             <button
-              onClick={() => navigate("/my-orders")}
+              onClick={() => goto(navigate, "/my-orders")}
               className="hidden sm:flex items-center gap-2 border border-[#ff2b85]/40 text-[#ff2b85] px-4 py-2 rounded-full font-semibold bg-white hover:bg-[#ff2b85]/10 transition-all shadow-sm"
             >
               <TbReceipt2 size={18} />
@@ -136,7 +137,7 @@ function Nav() {
 
             {/* Mobile Orders (icon only) */}
             <button
-              onClick={() => navigate("/my-orders")}
+              onClick={() => goto(navigate, "/my-orders")}
               className="sm:hidden flex items-center justify-center w-[38px] h-[38px] rounded-full border border-[#ff2b85]/40 text-[#ff2b85] bg-white shadow-sm hover:bg-[#ff2b85]/10 transition-all"
               title="Orders"
             >
@@ -149,7 +150,7 @@ function Nav() {
             {userData?.role === "user" && (
               <div
                 className="relative cursor-pointer hover:scale-110 transition-transform"
-                onClick={() => navigate("/cart")}
+                onClick={() => goto(navigate, "/cart")}
               >
                 <FiShoppingCart size={24} className="text-[#ff2b85]" />
                 {cartItems?.length > 0 && (
@@ -163,7 +164,7 @@ function Nav() {
             {/* Orders */}
             {userData?.role === "user" && (
               <button
-                onClick={() => navigate("/my-orders")}
+                onClick={() => goto(navigate, "/my-orders")}
                 className="hidden sm:block border border-[#fc8019]/40 text-[#fc8019] px-4 py-2 rounded-full font-semibold bg-white hover:bg-[#fc8019]/10 transition-all shadow-sm"
               >
                 Orders
@@ -188,7 +189,7 @@ function Nav() {
             </div>
             {userData.role === "user" && (
               <div
-                onClick={() => navigate("/my-orders")}
+                onClick={() => goto(navigate, "/my-orders")}
                 className="text-[#fc8019] font-medium cursor-pointer hover:text-[#ff2b85] transition-all text-center"
               >
                 My Orders

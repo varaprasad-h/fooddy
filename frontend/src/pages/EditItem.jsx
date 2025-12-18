@@ -7,6 +7,7 @@ import { setMyShopData } from "../redux/ownerSlice";
 import { itemAPI } from "../api";
 import { ClipLoader } from "react-spinners";
 import { getCategories } from "../category";
+import { goto } from "../routes";
 
 function EditItem() {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ function EditItem() {
 
       const result = await itemAPI.editItem(itemId, formData);
       dispatch(setMyShopData(result.data));
-      navigate("/");
+      goto(navigate, "/");
     } catch (error) {
       console.log(error);
     }
@@ -91,7 +92,7 @@ function EditItem() {
       {/* Back Button */}
       <div
         className="absolute top-[25px] left-[25px] z-[10] cursor-pointer hover:scale-110 transition-transform"
-        onClick={() => navigate("/")}
+        onClick={() => goto(navigate, "/")}
       >
         <IoIosArrowRoundBack size={40} className="text-[#ff2b85]" />
       </div>

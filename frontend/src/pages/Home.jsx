@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import UserDashboard from '../components/UserDashboard'
 import OwnerDashboard from '../components/OwnerDashboard'
 import DeliveryBoy from '../components/DeliveryBoy'
+import { goto } from '../routes'
 
 function Home() {
     const {userData}=useSelector(state=>state.user)
@@ -12,7 +13,7 @@ function Home() {
     // Redirect superadmin to their dashboard
     useEffect(() => {
         if(userData?.role === 'superadmin') {
-            navigate('/superadmin')
+            goto(navigate, '/superadmin')
         }
     }, [userData?.role, navigate])
 

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../redux/userSlice';
 import { authAPI, superAdminAPI } from '../api';
+import { goto } from '../routes';
 
 const SuperAdminDashboard = () => {
     const navigate = useNavigate();
@@ -64,7 +65,7 @@ const SuperAdminDashboard = () => {
         try {
             await authAPI.signout();
             dispatch(logout());
-            navigate('/signin');
+            goto(navigate, '/signin');
         } catch (error) {
             console.error('Logout error:', error);
             showMessage('Error logging out', 'error');
