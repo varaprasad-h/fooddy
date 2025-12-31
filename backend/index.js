@@ -34,6 +34,7 @@ const defaultAllowed = [
   "http://127.0.0.1:5180",
   "https://foody-six-jet.vercel.app",
   "https://foody-oqvg.onrender.com",
+  "http://foods.speshwayhrms.com",
 ]
 const allowedOrigins = envAllowed.length ? envAllowed : defaultAllowed
 const io=new Server(server,{
